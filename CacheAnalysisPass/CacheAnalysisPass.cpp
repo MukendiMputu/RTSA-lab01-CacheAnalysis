@@ -215,15 +215,15 @@ struct CacheAnalysisPass : PassInfoMixin<CacheAnalysisPass> {
   }
 
   PreservedAnalyses run(Module &M, ModuleAnalysisManager &MAM) {
-    FunctionAnalysisManager &FAM =
-        MAM.getResult<FunctionAnalysisManagerModuleProxy>(M).getManager();
+    // FunctionAnalysisManager &FAM =
+    //     MAM.getResult<FunctionAnalysisManagerModuleProxy>(M).getManager();
 
     addressCollector(M);
-    Function *EntryFunction;
+    // Function *EntryFunction;
     for (Function &F : M.getFunctionList()) {
       // Start iterating through CFG from entry point
       if (F.getName().equals(EntryPoint)) {
-        EntryFunction = &F;
+        // EntryFunction = &F;
         initEdges(F);
       }
       if (PrintAddresses)

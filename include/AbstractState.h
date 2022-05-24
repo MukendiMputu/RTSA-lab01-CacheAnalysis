@@ -12,8 +12,6 @@
 #include <sstream>
 #include <string>
 
-#include <llvm/Support/raw_ostream.h>
-
 #include "Address.h"
 // Forward declarations
 
@@ -103,8 +101,8 @@ public: // everything is public, because IDGAF
   void setUnrolled(unsigned int In) { Unrolled = In; }
 
   bool operator==(AbstractState In) {
-    for (int Index; Index < 16; Index++) {
-      for (int Age; Age < 4; Age++) {
+    for (int Index = 0; Index < 16; Index++) {
+      for (int Age = 0; Age < 4; Age++) {
         for (auto E1 : Sets[Index].Associativity[Age].Blocks) {
           // find E1 in In States Set and Age.
           if (std::find(In.Sets[Index].Associativity[Age].Blocks.begin(),
@@ -228,46 +226,60 @@ public: // everything is public, because IDGAF
       }
     }
     if (Verbose) {
-      llvm::outs() << "Before:\n";
+      std::cout << "Before:\n";
       this->dump();
     }
     // update this with PreAddr
     this->update(PreAddr);
     if (Verbose) {
-      llvm::outs() << "Update Tag: " << PreAddr.Tag << "\n";
-      llvm::outs() << "Update Set: " << PreAddr.Index << "\n";
-      llvm::outs() << "After:\n";
+      std::cout << "Update Tag: " << PreAddr.Tag << "\n";
+      std::cout << "Update Set: " << PreAddr.Index << "\n";
+      std::cout << "After:\n";
       this->dump();
     }
   }
 
-  void dump() {
-    llvm::outs() << Addr << " {\n";
-    llvm::outs() << "Unrolled: " << Unrolled << "\n";
-    llvm::outs() << "Computed: " << Computed << "\n";
-    llvm::outs() << "Predecessors: ";
-    for (auto PreNr : Predecessors) {
-      llvm::outs() << PreNr << " ";
-    }
-    llvm::outs() << "\n";
+    void dumpSet(unsigned int Set) {
+    std::cout << Addr << " {\n";
 
-    llvm::outs() << "Successors: ";
-    for (auto SuccNr : Successors) {
-      llvm::outs() << SuccNr << " ";
+      std::cout << "Set[" << Set << "]: \n";
+      for (auto EntryPair : this->Sets[Set].Associativity) {
+        std::cout << "  Age[" << EntryPair.first << "]: ";
+        for (auto Block : EntryPair.second.Blocks) {
+          std::cout << Block << " ";
+        }
+        std::cout << "\n";
+      }
+    std::cout << "}\n";
+  }
+
+  void dump() {
+    std::cout << Addr << " {\n";
+    std::cout << "Unrolled: " << Unrolled << "\n";
+    std::cout << "Computed: " << Computed << "\n";
+    std::cout << "Predecessors: ";
+    for (auto PreNr : Predecessors) {
+      std::cout << PreNr << " ";
     }
-    llvm::outs() << "\n";
+    std::cout << "\n";
+
+    std::cout << "Successors: ";
+    for (auto SuccNr : Successors) {
+      std::cout << SuccNr << " ";
+    }
+    std::cout << "\n";
 
     for (auto SetPair : Sets) {
-      llvm::outs() << "Set[" << SetPair.first << "]: \n";
+      std::cout << "Set[" << SetPair.first << "]: \n";
       for (auto EntryPair : SetPair.second.Associativity) {
-        llvm::outs() << "  Age[" << EntryPair.first << "]: ";
+        std::cout << "  Age[" << EntryPair.first << "]: ";
         for (auto Block : EntryPair.second.Blocks) {
-          llvm::outs() << Block << " ";
+          std::cout << Block << " ";
         }
-        llvm::outs() << "\n";
+        std::cout << "\n";
       }
     }
-    llvm::outs() << "}\n";
+    std::cout << "}\n";
   }
 };     // namespace
 #endif // STATE_H

@@ -1,4 +1,3 @@
-
 #ifndef ABSTRACHTCACHESTATE_H
 #define ABSTRACHTCACHESTATE_H
 
@@ -10,9 +9,6 @@
 #include <map>
 #include <ostream>
 #include <utility>
-
-#include <llvm/IR/BasicBlock.h>
-#include <llvm/Support/raw_ostream.h>
 
 #include "AbstractState.h"
 #include "Address.h"
@@ -92,7 +88,7 @@ public: // everything is public, because IDGAF
       }
       Visited[Visitor.first] = true;
     }
-    return false;
+    return Ret;
   }
 
   /**
@@ -104,8 +100,6 @@ public: // everything is public, because IDGAF
   void removeNestedLoops(
       std::list<unsigned int> LoopBodyIn,
       std::map<unsigned int, unsigned int> OrigNodeToUnrolledNode) {
-    unsigned int LoopHead = LoopBodyIn.front();
-    unsigned int LoopTail = LoopBodyIn.back();
     unsigned int NestLoopTail;
     for (unsigned int NodeNr : LoopBodyIn) {
       bool IsLoopHead = false;
@@ -294,34 +288,34 @@ public: // everything is public, because IDGAF
         removeNestedLoops(LoopBody, OrigNodeToUnrolledNode);
 
         if (Verbose && FoundLoopBody) {
-          llvm::outs() << "Found LoopHead @: " << NodeNr << "\n";
-          llvm::outs() << "With LoopTail @: " << LoopTail << "\n";
-          llvm::outs() << "With Body: {\n";
+          std::cout << "Found LoopHead @: " << NodeNr << "\n";
+          std::cout << "With LoopTail @: " << LoopTail << "\n";
+          std::cout << "With Body: {\n";
           int I = 1;
           for (auto Node : LoopBody) {
-            llvm::outs() << Node << ", ";
+            std::cout << Node << ", ";
             if (!(I++ % 5)) {
-              llvm::outs() << "\n";
+              std::cout << "\n";
             }
           }
-          llvm::outs() << "}\n";
-          llvm::outs() << "Unrolled States: {\n";
+          std::cout << "}\n";
+          std::cout << "Unrolled States: {\n";
           I = 1;
           for (auto Node : LoopBody) {
-            llvm::outs() << OrigNodeToUnrolledNode[Node] << ", ";
+            std::cout << OrigNodeToUnrolledNode[Node] << ", ";
             if (!(I++ % 5)) {
-              llvm::outs() << "\n";
+              std::cout << "\n";
             }
           }
-          llvm::outs() << "}\n";
+          std::cout << "}\n";
           I = 1;
-          llvm::outs() << "OrigNodeToUnrolledNode: {\n";
+          std::cout << "OrigNodeToUnrolledNode: {\n";
           for (auto Nr : OrigNodeToUnrolledNode) {
-            llvm::outs() << Nr.first << "->" << Nr.second << ", ";
+            std::cout << Nr.first << "->" << Nr.second << ", ";
             if (!(I++ % 3))
-              llvm::outs() << "\n";
+              std::cout << "\n";
           }
-          llvm::outs() << "}\n";
+          std::cout << "}\n";
         }
       }
     }
@@ -402,19 +396,19 @@ public: // everything is public, because IDGAF
    *
    */
   void dumpEdges() {
-    llvm::outs() << "Dumping Edges:\n";
+    std::cout << "Dumping Edges:\n";
     for (auto const &E : Edges) {
-      llvm::outs() << E.first;
+      std::cout << E.first;
       bool FirstPrint = true;
       for (unsigned int To : E.second) {
         if (FirstPrint) {
-          llvm::outs() << " -> " << To;
+          std::cout << " -> " << To;
           FirstPrint = false;
         } else {
-          llvm::outs() << ", " << To;
+          std::cout << ", " << To;
         }
       }
-      llvm::outs() << "\n";
+      std::cout << "\n";
     }
   }
 
@@ -455,5 +449,6 @@ public: // everything is public, because IDGAF
       Nodes[E.first].dump();
     }
   }
+
 };     // namespace
 #endif // ABSTRACHTCACHESTATE_H

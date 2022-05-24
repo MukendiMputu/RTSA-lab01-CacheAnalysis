@@ -1,0 +1,11 @@
+kind: pipeline
+type: docker
+name: llvmta-build
+steps:
+- name: Build
+  image: ls12-nvm-oma1:5000/cppdev
+  commands:
+  - mkdir build
+  - cd build
+  - cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DLT_LLVM_INSTALL_DIR=/usr ..
+  - ninja -j 2

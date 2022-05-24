@@ -1,10 +1,18 @@
 # RTSA-lab01-CacheAnalysis
 
+[![Build Status](http://129.217.34.203/api/badges/nils.hoelscher/RTSA-lab01-CacheAnalysis/status.svg)](http://129.217.34.203/nils.hoelscher/RTSA-lab01-CacheAnalysis)
+
 In this lab session you will learn how to implement a LRU cache in abstract representation.
-The Goal is to implement an LRU must Join in include/AbstractState.h.
-For this we assume a "Set-Associative LRU Cache", with 16 sets an associativity of 4 and a cacheline size of two times instruction size.
+
+## Exercise
+Implement a LRU Must-Join as described in the lecture, WCET - Cache Analysis.
+A 16 SetCache with an associativity of 4 Assumed, and cache lines can hold two memory words -> CacheSize 1024kB.
+In order to do so, complete the function "mustJoin" inside [include/AbstractState.h:138](https://git.cs.tu-dortmund.de/nils.hoelscher/RTSA-lab01-CacheAnalysis/src/branch/master/include/AbstractState.h#L138).
+The goal is to join the inbound state into the "this" state.
+
 
 The Project can be build, tested and Evaluated with the "helper" script.
+The Setup and some nice to knows are described in the following sections.
 
 ## Disclaimer
 
@@ -82,6 +90,7 @@ This is my personally preferred IDE setup for C/C++ and by no means needed to ac
 clangd,
 Clang-Format,
 CodeLLDB,
+C++ TestMate,
 Docker and
 Remote Development
 
@@ -145,6 +154,12 @@ You can also set the following variables in the CacheAnalysisPass/CacheAnalysisP
 
 Helpful to understand what the program does but not very so much for the actual exercise.
 
+## UnitTest
+
+The best way to see what your function does is to use the [UnitTest.cpp](https://git.cs.tu-dortmund.de/nils.hoelscher/RTSA-lab01-CacheAnalysis/src/branch/master/UnitTest/UnitTest.cpp).
+With "C++ TestMate" install you can simply run or debug the test from the side panel in VS Code (Flask Icon).
+The "C++ TestMate" is not installed in the VM as I just added this feature now.
+Please feel free to add more test cases to your liking in [UnitTest.cpp](https://git.cs.tu-dortmund.de/nils.hoelscher/RTSA-lab01-CacheAnalysis/src/branch/master/UnitTest/UnitTest.cpp).
 ## Use the Helper script
 
 Again if you work on a Pool PC use poolhelper.sh insted of the helper.sh script.

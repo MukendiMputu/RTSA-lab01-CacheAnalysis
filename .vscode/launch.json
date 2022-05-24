@@ -4,21 +4,21 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-  {
-      "type": "lldb",
-      "request": "launch",
-      "name": "LLDB Unrolling",
-      "program": "/usr/bin/opt",
-      "args": [
-        "-load-pass-plugin",
-        "${workspaceFolder}/build/libCacheAnalysisPass.so",
-        "-passes=lru-misses",
-        "${workspaceFolder}/test/cnt.ll",
-        "-o",
-        "/dev/null"
-      ],
-      "cwd": "${workspaceFolder}"
-    },
+  // {
+  //     "type": "lldb",
+  //     "request": "launch",
+  //     "name": "LLDB Unrolling",
+  //     "program": "/usr/bin/opt",
+  //     "args": [
+  //       "-load-pass-plugin",
+  //       "${workspaceFolder}/build/libCacheAnalysisPass.so",
+  //       "-passes=lru-misses",
+  //       "${workspaceFolder}/test/cnt.ll",
+  //       "-o",
+  //       "/dev/null"
+  //     ],
+  //     "cwd": "${workspaceFolder}"
+  //   },
     {
       "type": "lldb",
       "request": "launch",

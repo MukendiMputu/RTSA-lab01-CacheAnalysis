@@ -2,6 +2,19 @@ cmake_minimum_required(VERSION 3.13.4)
 project(RTSA-lab01-CacheAnalysis)
 
 #===============================================================================
+# 0. Add GoogleTest
+#===============================================================================
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL 
+  URL https://github.com/google/googletest/archive/refs/heads/main.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+#===============================================================================
 # 1. VERIFY LLVM INSTALLATION DIR
 # This is just a bit of a sanity checking.
 #===============================================================================
@@ -108,4 +121,5 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 # available for the sub-projects.
 #===============================================================================
 add_subdirectory(CacheAnalysisPass)  # Use your pass name here.
+add_subdirectory(UnitTest)
 #add_subdirectory(lib)

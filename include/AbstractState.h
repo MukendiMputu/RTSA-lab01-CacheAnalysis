@@ -137,32 +137,58 @@ public: // everything is public, because IDGAF
     // TODO: Due date 08.06.2022
 
     // Loop through all 16 sets
-    for (int Index; Index < 16; Index++) {
+    for (int Index = 0; Index < 16; Index++) {
 
       // create a temporary set of associativity
       struct Set temp_set;
+      struct Set current_set = Sets[Index];
+      struct Set incoming_set = In.Sets[Index];
 
       // loop through all 4 Ages
-      for (int Age; Age < 4; Age++) {
-        struct Set current_set = Sets[Index];
-        struct Set incoming_set = In.Sets[Index];
+      //for (int Age = 0; Age < 4; Age++) {
 
-        // loop through current set and build list of all contained blocks
-        for (auto age: current_set.Associativity) {
-          std::cout << age.first
-                    << ":";
-                    for (auto block : age.second.Blocks)
-                      std::cout << block << std::endl;
-        }
-        // loop through incoming set and build list of all contained blocks
-        for (auto E2 : In.Sets[Index].Associativity[Age].Blocks) {
+      std::cout << "Block list in current set"
+                << "[" << Index << "]" << std::endl;
+      // loop through current set and build list of all contained blocks
+      for (auto associativity_map : current_set.Associativity) {
 
-        }
+        int associativity_age = associativity_map.first;
+        std::list<unsigned int> associativity_block_list =
+            associativity_map.second.Blocks;
+        // for every element of associativity_block_list
+          // if find equivalent in incoming_set.Associativity.block_list
+            // set new_age = max(associativity_age, age);
+            // temp_set.Associativity.insert(std::pair<unsigned int, struct Entry>(new_age, new_entry) )
+        print_block_list(associativity_age, associativity_block_list);
       }
-      
-      Sets[Index] = temp_set;
 
+
+
+      std::cout << "Block list in incoming set"
+                << "[" << Index << "]" << std::endl;
+      // loop through incoming set and build list of all contained blocks
+      for (auto associativity : incoming_set.Associativity) {
+
+        int age = associativity.first;
+        std::list<unsigned int> block_list =
+            associativity.second.Blocks;
+        print_block_list(age, block_list);
+      }
+      // for (auto E2 : In.Sets[Index].Associativity[Age].Blocks) {
+
+      // }
+      //}
+
+      Sets[Index] = temp_set;
     }
+  }
+
+  void print_block_list(int age, std::list<unsigned int> list) {
+
+    std::cout << "\t" << age << " -> {";
+    for (auto block : list)
+      std::cout << block << " ";
+    std::cout << "}" << std::endl;
   }
 
   /**
@@ -239,17 +265,17 @@ public: // everything is public, because IDGAF
     }
   }
 
-    void dumpSet(unsigned int Set) {
+  void dumpSet(unsigned int Set) {
     std::cout << Addr << " {\n";
 
-      std::cout << "Set[" << Set << "]: \n";
-      for (auto EntryPair : this->Sets[Set].Associativity) {
-        std::cout << "  Age[" << EntryPair.first << "]: ";
-        for (auto Block : EntryPair.second.Blocks) {
-          std::cout << Block << " ";
-        }
-        std::cout << "\n";
+    std::cout << "Set[" << Set << "]: \n";
+    for (auto EntryPair : this->Sets[Set].Associativity) {
+      std::cout << "  Age[" << EntryPair.first << "]: ";
+      for (auto Block : EntryPair.second.Blocks) {
+        std::cout << Block << " ";
       }
+      std::cout << "\n";
+    }
     std::cout << "}\n";
   }
 

@@ -56,7 +56,7 @@ struct CacheAnalysisPass : PassInfoMixin<CacheAnalysisPass> {
   bool PrintEdgesPost = false;
   bool DumpToDot = false;
   bool DumpNodes = false;
-  bool LoopUnrolling = false;
+  bool LoopUnrolling = true;
 
   // Assume a 4kB Cache
   // with 16 Sets, associativity of 4 and Cachelines fitting two times the instruction size

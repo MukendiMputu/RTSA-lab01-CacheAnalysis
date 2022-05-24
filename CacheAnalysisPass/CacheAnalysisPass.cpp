@@ -56,10 +56,10 @@ struct CacheAnalysisPass : PassInfoMixin<CacheAnalysisPass> {
   bool PrintEdgesPost = false;
   bool DumpToDot = false;
   bool DumpNodes = false;
-  bool LoopUnrolling = true;
+  bool LoopUnrolling = false;
 
   // Assume a 4kB Cache
-  // with 16 Sets, associativity of 4 and Cachelines fitting two
+  // with 16 Sets, associativity of 4 and Cachelines fitting two times the instruction size
   CacheType Cache = CacheType(16, 4, 128);
   StringRef EntryPoint = "main";
   unsigned int EntryAddress;

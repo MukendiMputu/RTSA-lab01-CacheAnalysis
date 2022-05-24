@@ -7,7 +7,7 @@ clean () {
 }
 
 config () {
-  echo "==== Crating build folder ===="
+  echo "==== Creating build folder ===="
   mkdir build
   cd build
   echo "==== Configuring cmake ===="

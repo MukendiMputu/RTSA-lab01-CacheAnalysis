@@ -100,10 +100,6 @@ public: // everything is public, because IDGAF
     Unrolled = UnrolledIn;
   }
 
-  // AbstractState(Address Addr) {
-  //   Sets[Addr.Index].Associativity[0] = {{Addr.Tag}};
-  // }
-
   void setUnrolled(unsigned int In) { Unrolled = In; }
 
   bool operator==(AbstractState In) {
@@ -140,6 +136,35 @@ public: // everything is public, because IDGAF
      * The exercise is to Fill this function with an LRU must Join.
      * For this you need to use Sets. Associativity and Blocks.
      */
+    // TODO: Due date 08.06.2022
+
+    // Loop through all 16 sets
+    for (int Index; Index < 16; Index++) {
+
+      // create a temporary set of associativity
+      struct Set temp_set;
+
+      // loop through all 4 Ages
+      for (int Age; Age < 4; Age++) {
+        struct Set current_set = Sets[Index];
+        struct Set incoming_set = In.Sets[Index];
+
+        // loop through current set and build list of all contained blocks
+        for (auto age: current_set.Associativity) {
+          std::cout << age.first
+                    << ":";
+                    for (auto block : age.second.Blocks)
+                      std::cout << block << std::endl;
+        }
+        // loop through incoming set and build list of all contained blocks
+        for (auto E2 : In.Sets[Index].Associativity[Age].Blocks) {
+
+        }
+      }
+      
+      Sets[Index] = temp_set;
+
+    }
   }
 
   /**
@@ -244,6 +269,5 @@ public: // everything is public, because IDGAF
     }
     llvm::outs() << "}\n";
   }
-
 };     // namespace
 #endif // STATE_H

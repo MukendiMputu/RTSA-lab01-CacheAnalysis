@@ -10,3 +10,4 @@ build/
 *.solution
 compile_commands.json
 llvm/
+.idea

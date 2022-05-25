@@ -5,6 +5,7 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
 #include <list>
 #include <map>
@@ -131,10 +132,9 @@ public: // everything is public, because IDGAF
    */
   void mustJoin(AbstractState In) {
     /**
-     * The exercise is to Fill this function with an LRU must Join.
+     *  TODO: Fill this function with an LRU must Join.
      * For this you need to use Sets. Associativity and Blocks.
      */
-    // TODO: Due date 08.06.2022
 
     // Loop through all 16 sets
     for (int Index = 0; Index < 16; Index++) {
@@ -144,51 +144,43 @@ public: // everything is public, because IDGAF
       struct Set current_set = Sets[Index];
       struct Set incoming_set = In.Sets[Index];
 
-      // loop through all 4 Ages
-      //for (int Age = 0; Age < 4; Age++) {
-
-      std::cout << "Block list in current set"
-                << "[" << Index << "]" << std::endl;
-      // loop through current set and build list of all contained blocks
+      // loop through all Ages
       for (auto associativity_map : current_set.Associativity) {
 
-        int associativity_age = associativity_map.first;
-        std::list<unsigned int> associativity_block_list =
+        auto current_associativity_age = associativity_map.first;
+        std::list<unsigned int> current_associativity_blocklist =
             associativity_map.second.Blocks;
         // for every element of associativity_block_list
-          // if find equivalent in incoming_set.Associativity.block_list
-            // set new_age = max(associativity_age, age);
-            // temp_set.Associativity.insert(std::pair<unsigned int, struct Entry>(new_age, new_entry) )
-        print_block_list(associativity_age, associativity_block_list);
+        for (auto block : current_associativity_blocklist) {
+          // look through ALL incoming_set.Associativities.Entry.Blocklists for
+          // occurrences
+          for (auto incoming_associativity : incoming_set.Associativity) {
+            auto age = incoming_associativity.first;
+            struct Entry entry = incoming_associativity.second;
+
+            auto ret =
+                std::find(entry.Blocks.begin(), entry.Blocks.end(), block);
+            if (ret != entry.Blocks.end()) {
+
+              // take the maximum age
+              auto new_age = std::max(current_associativity_age, age);
+
+              // create a new entry at the maximum age and
+              std::list<unsigned int> new_block_list;
+              new_block_list.push_back((unsigned int) *ret);
+              struct Entry new_entry = {new_block_list};
+
+              // add it to temporary set
+              temp_set.Associativity.insert(
+                  std::pair<unsigned int, struct Entry>(new_age, new_entry));
+            }
+          }
+        }
+        // print_block_list(associativity_age, associativity_block_list);
+
+        Sets[Index] = temp_set;
       }
-
-
-
-      std::cout << "Block list in incoming set"
-                << "[" << Index << "]" << std::endl;
-      // loop through incoming set and build list of all contained blocks
-      for (auto associativity : incoming_set.Associativity) {
-
-        int age = associativity.first;
-        std::list<unsigned int> block_list =
-            associativity.second.Blocks;
-        print_block_list(age, block_list);
-      }
-      // for (auto E2 : In.Sets[Index].Associativity[Age].Blocks) {
-
-      // }
-      //}
-
-      Sets[Index] = temp_set;
     }
-  }
-
-  void print_block_list(int age, std::list<unsigned int> list) {
-
-    std::cout << "\t" << age << " -> {";
-    for (auto block : list)
-      std::cout << block << " ";
-    std::cout << "}" << std::endl;
   }
 
   /**
